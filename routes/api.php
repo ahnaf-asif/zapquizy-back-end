@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Models\Level;
 use App\Models\Subject;
 use Illuminate\Http\Request;
@@ -32,6 +33,8 @@ Route::get('/levels', function(){
     $levels  = Level::get(['id','name','val']);
     return response()->json($levels);
 });
+
+Route::post('/check-phone-verification', [AuthController::class, 'check_verification']);
 
 Route::prefix('/admin/model-test')->group(function(){
     Route::controller(AdminController::class)->group(function(){

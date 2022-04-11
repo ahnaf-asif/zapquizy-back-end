@@ -15,7 +15,21 @@ class AuthController extends Controller
     /**
      * @throws AuthenticationException
      */
+    public function check_verification(Request $req){
+        $user = User::whereEmail($req->email)->first();
+        if($user && $user->phone_verified != true){
+            return response()->json(['error' => true, 'phone_verified'=>false,'error_message' => 'Your phone is not verified']);
+        }
+        else {
+            return response()->json(['error' => false]);
+        }
+    }
     public function login(Request $req){
+        if($req->verify){
+            $user = User::whereEmail($req->email)->first();
+            $user->phone_verified = true;
+            $user->save();
+        }
         if(!Auth::attempt($req->only('email','password'))){
             throw new AuthenticationException();
         }
