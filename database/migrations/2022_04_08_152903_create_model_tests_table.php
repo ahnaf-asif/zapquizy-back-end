@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('model_tests', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('level_id');
-            $table->bigInteger('subject_id');
+            $table->bigInteger('level_id')->nullable();
+            $table->bigInteger('subject_id')->nullable();
             $table->string('name');
             $table->integer('duration');
             $table->timestamps();

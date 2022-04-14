@@ -40,6 +40,20 @@ class AdminController extends Controller
 
         return ModelTest::with('subject')->with('level')->find($id);
     }
+    public function delete_model_test($id){
+        // all associated questions and options will be deleted too
+        $model_test = ModelTest::find($id);
+        if($model_test){
+            foreach($model_test->questions as $ques){
+                foreach($ques->options as $opt){
+                    $opt->delete();
+                }
+                $ques->delete();
+            }
+            $model_test->delete();
+        }
+        return ModelTest::with('subject')->with('level')->orderBy('id', 'desc')->get();
+    }
     public function get_model_test_questions($id){
         return ModelTest::find($id)->questions;
     }
@@ -50,7 +64,7 @@ class AdminController extends Controller
         $question->name = $req->name;
         $question->type = $req->type;
         $question->save();
-
+//        return ModelTest::find($id)->questions;
         foreach($req->options as $option){
             $new_op = new Option;
             $new_op -> name = $option['name'];
@@ -60,5 +74,39 @@ class AdminController extends Controller
             $new_op -> save();
         }
         return ModelTest::find($id)->questions;
+    }
+    public function edit_model_test_question($model_test_id, $question_id, Request $req){
+        $question = Question::find($question_id);
+
+        if(!$question){
+            return response()->json(['error'=>'no data found']);
+        }
+        $question->name = $req->name;
+        $question->type = $req->type;
+        $question->save();
+
+        foreach($question->options as $option){
+            $option->delete();
+        }
+        foreach($req->options as $option){
+            $new_op = new Option;
+            $new_op -> name = $option['name'];
+            $new_op -> correct = $option['correct'];
+            $new_op -> question_id = $question->id;
+
+            $new_op -> save();
+        }
+        return response()->json(['status'=>'ok']);
+    }
+    public function delete_model_test_question($model_test_id, $question_id){
+        $question = Question::find($question_id);
+        if(!$question){
+            return response()->json(['error'=>'no data found']);
+        }
+        foreach($question->options as $option){
+            $option->delete();
+        }
+        $question->delete();
+        return response()->json(['status'=>'ok']);
     }
 }

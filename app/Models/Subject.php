@@ -13,4 +13,7 @@ class Subject extends Model
     {
         return $this->hasMany(ModelTest::class);
     }
+    public function question_banks(){
+        return $this->hasMany(QuestionBank::class);
+    }
 }

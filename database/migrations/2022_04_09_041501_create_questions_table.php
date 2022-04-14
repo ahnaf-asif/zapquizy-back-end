@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('model_test_id');
+            $table->bigInteger('model_test_id')->nullable();
             $table->string('name');
             $table->string('type');// mcq, short ans, true/false etc
             $table->timestamps();

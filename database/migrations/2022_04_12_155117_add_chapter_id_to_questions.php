@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('question_id')->nullable();
-            $table->string('name');
-            $table->boolean('correct');
-            $table->timestamps();
+        Schema::table('questions', function (Blueprint $table) {
+            $table->bigInteger('chapter_id')->nullable();
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('options');
+        Schema::table('questions', function (Blueprint $table) {
+            //
+        });
     }
 };

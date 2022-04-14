@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminQuestionBankController;
 use App\Http\Controllers\AuthController;
 use App\Models\Level;
 use App\Models\Subject;
@@ -42,9 +43,33 @@ Route::prefix('/admin/model-test')->group(function(){
         Route::get('/get', 'all_model_tests');
         Route::get('/get/{id}', 'model_test');
         Route::post('/update/{id}', 'update_model_test');
+        Route::post('/delete/{id}', 'delete_model_test');
 
         Route::get('/{id}/questions/get', 'get_model_test_questions');
         Route::post('/{id}/questions/add', 'add_model_test_question');
+        Route::post('/{model_test_id}/questions/{question_id}/edit', 'edit_model_test_question');
+        Route::post('/{model_test_id}/questions/{question_id}/delete', 'delete_model_test_question');
+    });
+});
+
+Route::prefix('/admin/question-bank')->group(function(){
+    Route::controller(AdminQuestionBankController::class)->group(function(){
+        Route::post('/add', 'question_bank_add');
+        Route::get('/get', 'all_question_banks');
+        Route::get('/get/{id}', 'question_bank');
+        Route::post('/update/{id}', 'update_question_bank');
+        Route::post('/delete/{id}', 'delete_question_bank');
+
+        Route::get('/{id}/chapters/get', 'get_question_bank_chapters');
+        Route::post('/{id}/chapters/add', 'add_question_bank_chapter');
+        Route::get('/{question_bank_id}/chapters/{chapter_id}/get', 'get_chapter');
+        Route::post('/{question_bank_id}/chapters/{chapter_id}/edit', 'edit_question_bank_chapter');
+        Route::post('/{question_bank_id}/chapters/{chapter_id}/delete', 'delete_question_bank_chapter');
+
+        Route::get('/{question_bank_id}/chapters/{chapter_id}/questions/get', 'get_chapter_questions');
+        Route::post('/{question_bank_id}/chapters/{chapter_id}/questions/add', 'add_chapter_question');
+        Route::post('/{question_bank_id}/chapters/{chapter_id}/questions/{question_id}/edit', 'edit_chapter_question');
+        Route::post('/{question_bank_id}/chapters/{chapter_id}/questions/{question_id}/delete', 'delete_chapter_question');
     });
 });
 
