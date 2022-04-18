@@ -34,6 +34,20 @@ Route::get('/levels', function(){
     $levels  = Level::get(['id','name','val']);
     return response()->json($levels);
 });
+Route::post('/image/upload', function(Request $request){
+    $request->validate([
+        'file' => 'required|mimes:jpg,jpeg,png,webp|max:5048'
+    ]);
+
+    if($request->file()) {
+        $file_name = time().'_'.$request->file->getClientOriginalName();
+        $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
+
+        $file_path = '/storage/'.$file_path;
+
+        return response()->json(['success'=>'File uploaded successfully.', 'file_path' => $file_path]);
+    }
+});
 
 Route::post('/check-phone-verification', [AuthController::class, 'check_verification']);
 
