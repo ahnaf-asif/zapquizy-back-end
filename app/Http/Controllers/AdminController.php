@@ -17,6 +17,7 @@ class AdminController extends Controller
         $new_model_test -> duration = $req -> duration;
         $new_model_test -> level_id = $req -> level_id;
         $new_model_test -> subject_id = $req -> subject_id;
+        $new_model_test -> model_test_package_id = $req -> model_test_package_id;
 
         $new_model_test -> save();
 

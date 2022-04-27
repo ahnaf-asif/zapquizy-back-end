@@ -17,4 +17,7 @@ class QuestionBank extends Model
     public function level(){
         return $this->belongsTo(Level::class);
     }
+    public function model_test_package(){
+        return $this->belongsTo(ModelTestPackage::class);
+    }
 }

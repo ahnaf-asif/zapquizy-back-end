@@ -18,4 +18,7 @@ class ModelTest extends Model
     public function questions(){
         return $this->hasMany(Question::class)->with('options')->orderBy('id', 'desc');
     }
+    public function model_test_package(){
+        return $this->belongsTo(ModelTestPackage::class);
+    }
 }

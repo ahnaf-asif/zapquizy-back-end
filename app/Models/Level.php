@@ -16,4 +16,7 @@ class Level extends Model
     public function question_banks(){
         return $this->hasMany(QuestionBank::class);
     }
+    public function model_test_packages(){
+        return $this->hasMany(ModelTestPackage::class);
+    }
 }

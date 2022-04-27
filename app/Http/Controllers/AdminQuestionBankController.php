@@ -18,6 +18,7 @@ class AdminQuestionBankController extends Controller
         $new_question_bank -> name = $req->name;
         $new_question_bank -> level_id = $req -> level_id;
         $new_question_bank -> subject_id = $req -> subject_id;
+        $new_question_bank -> model_test_package_id = $req -> model_test_package_id;
 
         $new_question_bank -> save();
 

@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminModelTestPackageController;
 use App\Http\Controllers\AdminQuestionBankController;
 use App\Http\Controllers\AuthController;
 use App\Models\Level;
@@ -38,7 +39,6 @@ Route::post('/image/upload', function(Request $request){
     $request->validate([
         'file' => 'required|mimes:jpg,jpeg,png,webp|max:5048'
     ]);
-
     if($request->file()) {
         $file_name = time().'_'.$request->file->getClientOriginalName();
         $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
@@ -87,3 +87,15 @@ Route::prefix('/admin/question-bank')->group(function(){
     });
 });
 
+Route::prefix('/admin/model-test-package/')->group(function(){
+   Route::controller(AdminModelTestPackageController::class)->group(function(){
+       Route::get('/get', 'all_model_test_packages');
+       Route::get('/get/{id}', 'model_test_package');
+       Route::post('/add', 'model_test_package_add');
+       Route::post('/update/{id}', 'update_model_test_package');
+       Route::post('/delete/{id}', 'delete_model_test_package');
+
+       Route::get('/{id}/model-tests', 'model_tests');
+       Route::get('/{id}/question-banks', 'question_banks');
+   });
+});

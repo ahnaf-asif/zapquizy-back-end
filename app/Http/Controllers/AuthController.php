@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use ErrorException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,21 +17,16 @@ class AuthController extends Controller
      * @throws AuthenticationException
      */
     public function check_verification(Request $req){
-        $user = User::whereEmail($req->email)->first();
-        if($user && $user->phone_verified != true){
-            return response()->json(['error' => true, 'phone_verified'=>false,'error_message' => 'Your phone is not verified']);
-        }
-        else {
-            return response()->json(['error' => false]);
-        }
+        $user = User::where('phone', $req->phone)->get();
+        return $user;
     }
     public function login(Request $req){
         if($req->verify){
-            $user = User::whereEmail($req->email)->first();
+            $user = User::where('phone', $req->phone)->first();
             $user->phone_verified = true;
             $user->save();
         }
-        if(!Auth::attempt($req->only('email','password'))){
+        if(!Auth::attempt($req->only('phone','password'))){
             throw new AuthenticationException();
         }
     }
@@ -38,7 +34,6 @@ class AuthController extends Controller
 
         $validation = Validator::make($req->all(), [
             'name' => 'required|max:255',
-            'email' => 'required|unique:users|max:255',
             'phone' => 'required|unique:users|max:64'
         ]);
         if($validation->fails()){
@@ -48,7 +43,6 @@ class AuthController extends Controller
         $user = new User;
 
         $user -> name = $req->name;
-        $user -> email = $req->email;
         $user -> phone = $req->phone;
         $user -> password = bcrypt($req->password);
 
